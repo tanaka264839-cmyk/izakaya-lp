@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【見本・架空の店】炉ばた 小灯（こともし）｜LPひな形の見本</title>
+<meta name="description" content="LPひな形の見本です。炉ばた 小灯は架空の店で、実在しません。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Yuji+Syuku&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#05060c;
+  --red:#e0452a;--amber:#ffb45e;--cream:#f2e7d5;--muted:rgba(242,231,213,.64);--line:rgba(242,231,213,.16);
+  --bg:#18224a;--glow:.38;--core-o:0;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --pad:clamp(20px,6vw,96px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--cream);font-family:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;line-height:1.9;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+ul,ol{list-style:none}
+
+/* ===== 背景の層：玉ボケ・線の提灯・煙・周りの暗さ・粒（基準7） ===== */
+.fx{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.fx-back{z-index:0}
+.fx-front{z-index:3}
+#bokeh{position:absolute;inset:0;overflow:hidden}
+#bokeh i{position:absolute;left:0;top:0;border-radius:50%;background:radial-gradient(circle,rgba(255,176,104,.95) 0%,rgba(224,69,42,.55) 48%,rgba(224,69,42,0) 72%);will-change:transform}
+#core{position:absolute;right:clamp(-60px,5vw,120px);top:50%;width:min(44vw,600px);transform:translateY(-50%);opacity:var(--core-o)}
+.sway{transform-origin:50% 0;animation:sway 7s ease-in-out infinite}
+.lantern-svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 0 calc(var(--glow) * 70px) rgba(255,110,50,calc(var(--glow) * .6)))}
+.l-string{stroke:rgba(242,231,213,.38);stroke-width:1}
+.l-cap{fill:#07080e;stroke:rgba(255,180,94,.65);stroke-width:1.2}
+.l-rib{fill:none;stroke:rgba(242,231,213,.3);stroke-width:1}
+.l-equator{stroke:rgba(255,180,94,.95);stroke-width:1.8}
+.l-mer{fill:none;stroke-width:1}
+.l-mer.front{stroke:rgba(242,231,213,.24)}
+.l-mer.back{stroke:rgba(242,231,213,.08)}
+.l-core{opacity:var(--glow);transition:opacity 1.4s var(--ease)}
+#smoke{position:absolute;inset:0;mix-blend-mode:screen}
+#smoke i{position:absolute;width:70vmax;height:70vmax;border-radius:50%;background:radial-gradient(circle,rgba(190,198,230,.09),rgba(190,198,230,0) 62%);filter:blur(24px);animation:drift 46s linear infinite}
+#smoke i:nth-child(1){left:-20vmax;top:10vh}
+#smoke i:nth-child(2){left:40vw;top:40vh;animation-duration:58s;animation-direction:reverse}
+#smoke i:nth-child(3){left:10vw;top:-30vh;animation-duration:70s}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,rgba(0,0,0,0) 36%,rgba(2,3,8,.8) 100%)}
+#grain{position:absolute;inset:-50%;opacity:.075;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");animation:grain 1.4s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,1%)}100%{transform:translate(0,0)}}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(8vw,-6vh) scale(1.15)}100%{transform:translate(0,0) scale(1)}}
+@keyframes sway{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== 見出し・時計・提灯の数（基準8） ===== */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:20px var(--pad);pointer-events:none}
+#hdr > *{pointer-events:auto}
+#hdr::before{content:"";position:absolute;left:0;right:0;top:0;height:150%;background:linear-gradient(180deg,rgba(5,6,12,.8) 0%,rgba(5,6,12,.4) 55%,rgba(5,6,12,0) 100%);z-index:-1;pointer-events:none}
+.logo{text-decoration:none;display:flex;align-items:center;gap:.7rem;font-weight:900;font-size:1.2rem;letter-spacing:.25em}
+.logo small{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:.78rem;letter-spacing:.4em;color:var(--amber)}
+.mark{width:13px;height:16px;border-radius:50% / 46%;background:radial-gradient(circle at 50% 45%,#ffe0ad,#e0452a 72%);box-shadow:0 0 14px rgba(255,110,50,.85)}
+.clock{display:flex;align-items:center;gap:.8rem;color:var(--amber);font-family:"Cormorant Garamond",serif;overflow:hidden;height:2.8rem}
+.clock small{font-family:"Zen Old Mincho",serif;font-size:.7rem;letter-spacing:.4em;color:var(--muted)}
+#clock{display:inline-block;font-size:2rem;font-weight:600;line-height:2.8rem}
+#clock.tick{animation:tick .9s var(--ease)}
+@keyframes tick{from{transform:translateY(80px);filter:blur(8px);opacity:0}to{transform:none;filter:blur(0);opacity:1}}
+.lamps{position:fixed;z-index:20;right:clamp(10px,1.6vw,26px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:16px}
+.lamps li{width:12px;height:15px;border-radius:50% / 46%;border:1px solid rgba(242,231,213,.3);background:rgba(242,231,213,.06);transition:background .9s var(--ease),box-shadow .9s var(--ease),border-color .9s}
+.lamps li.lit{border-color:transparent;background:radial-gradient(circle at 50% 45%,#ffe0ad,#e0452a 72%);box-shadow:0 0 16px rgba(255,110,50,.9)}
+
+/* ===== 出てくる動き（基準5：80px以上＋ぼかし8px以上） ===== */
+.r{opacity:0;transform:translateY(96px) scale(.97);filter:blur(12px);transition:opacity 1s var(--ease),transform 1.4s var(--ease),filter 1.1s var(--ease)}
+.r.on{opacity:1;transform:none;filter:blur(0)}
+.pop{opacity:0;transform:translateY(90px) scale(.7);filter:blur(10px);transition:opacity .9s var(--ease),transform 1.2s var(--ease),filter 1s var(--ease)}
+.pop.on{opacity:1;transform:none;filter:blur(0)}
+
+/* ===== 共通 ===== */
+main{position:relative;z-index:2;overflow-x:clip}
+.scene{position:relative;min-height:100vh;padding:20vh var(--pad)}
+.big{font-weight:900;font-size:clamp(2.5rem,5.8vw,6rem);line-height:1.2;letter-spacing:.02em;text-shadow:0 4px 30px rgba(0,0,0,.55)}
+.lead{font-size:clamp(.95rem,1.15vw,1.1rem);color:var(--muted);margin-top:2rem;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+.stamp{display:flex;align-items:baseline;gap:1.2rem;color:var(--amber)}
+.stamp b{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(3.4rem,7.4vw,7.6rem);line-height:.9}
+.stamp span{font-size:.85rem;letter-spacing:.4em;color:var(--muted)}
+.lantern{position:relative}
+.lantern img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:50% / 46%}
+.lantern::before,.lantern::after{content:"";position:absolute;left:31%;right:31%;height:16px;background:#06070c;border:1px solid rgba(255,180,94,.55);border-radius:3px;z-index:2}
+.lantern::before{top:-7px}
+.lantern::after{bottom:-7px}
+.circle{position:relative}
+.circle img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%}
+.circle::after{content:"";position:absolute;inset:-6%;border-radius:50%;border:1px dashed rgba(255,180,94,.42);animation:spin 40s linear infinite;pointer-events:none}
+.yen::after{content:"円";font-family:"Zen Old Mincho",serif;font-size:.55em;margin-left:.2em;color:var(--muted)}
+
+/* ===== KV ===== */
+.kv{position:relative;height:100vh;min-height:620px;overflow:hidden}
+.kv-photo{position:absolute;inset:0;overflow:hidden}
+.kv-photo img{width:100%;height:120%;object-fit:cover;object-position:28% 50%;filter:brightness(.42) saturate(.92) blur(1.5px);will-change:transform}
+.kv-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,12,.9) 0%,rgba(5,6,12,.3) 48%,rgba(5,6,12,.5) 100%),linear-gradient(0deg,var(--bg) 0%,rgba(0,0,0,0) 35%)}
+.kv-kanji{position:absolute;left:-2vw;top:-4vh;writing-mode:vertical-rl;font-weight:900;font-size:clamp(18rem,64vh,52rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,180,94,.22);pointer-events:none;user-select:none}
+.kv-lantern{position:absolute;right:clamp(40px,9vw,170px);top:50%;width:min(38vw,540px);transform:translateY(-50%);z-index:1}
+.kv-copy{position:absolute;left:var(--pad);bottom:clamp(56px,12vh,140px);z-index:2}
+.kv-eyebrow{font-size:.82rem;letter-spacing:.4em;color:var(--amber);margin-bottom:1.4rem}
+.kv-title{font-weight:900;font-size:clamp(3.2rem,8.2vw,8.6rem);line-height:1.06;text-shadow:0 6px 40px rgba(0,0,0,.6)}
+.kv-title span{display:block}
+.kv-title span:nth-child(2){margin-left:1.2em;color:var(--amber)}
+.kv-name{margin-top:1.6rem;letter-spacing:.3em}
+.kv-name em{font-style:normal;font-family:"Cormorant Garamond",serif;color:var(--muted);margin-left:.8em;letter-spacing:.35em}
+.kv-scroll{position:absolute;right:var(--pad);bottom:4vh;z-index:2;display:flex;flex-direction:column;align-items:center;gap:.7rem;text-decoration:none;font-size:.75rem;letter-spacing:.4em;color:var(--muted)}
+.kv-scroll i{width:1px;height:64px;background:linear-gradient(var(--amber),rgba(255,180,94,0));animation:drop 2.4s ease-in-out infinite;transform-origin:top}
+@keyframes drop{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* ===== 18:00 のれんを上げる ===== */
+.s1{min-height:108vh;display:flex;align-items:center}
+.s1-photo{position:absolute;left:0;top:14vh;width:min(72vw,1180px);height:80vh;clip-path:polygon(0 0,100% 7%,93% 100%,0 92%);overflow:hidden}
+.s1-photo img{width:100%;height:120%;object-fit:cover;object-position:22% 50%;will-change:transform}
+.s1 .stamp{position:absolute;right:var(--pad);top:10vh;z-index:3}
+.s1-text{position:relative;z-index:3;margin-left:auto;width:min(44vw,640px);padding-top:26vh}
+
+/* ===== 19:30 乾杯 ===== */
+.s2{min-height:120vh;padding-top:12vh;display:grid;grid-template-columns:1fr minmax(260px,34vw);gap:6vw;align-items:end}
+.s2 .stamp{position:absolute;left:var(--pad);top:12vh}
+.s2-word{position:absolute;left:-1vw;top:26vh;z-index:3;font-weight:900;font-size:clamp(9rem,27vw,26rem);line-height:1;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1.5px rgba(224,69,42,.9);pointer-events:none;white-space:nowrap}
+.s2-text{grid-column:1;grid-row:1;position:relative;z-index:4;padding-bottom:6vh}
+.s2-photo{grid-column:2;grid-row:1;position:relative;z-index:2;margin-right:4vw}
+.drinks{margin-top:2.4rem;max-width:380px;border-top:1px solid var(--line)}
+.drinks li{display:flex;justify-content:space-between;align-items:baseline;padding:.9rem 0;border-bottom:1px solid var(--line)}
+.drinks b{font-family:"Cormorant Garamond",serif;font-size:1.7rem;color:var(--amber);font-weight:600}
+
+/* ===== 21:00 焼き場（串が横一列に流れる） ===== */
+.s3{height:360vh;padding:0}
+.s3-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center}
+.s3-track{display:flex;align-items:center;gap:7vw;padding:0 12vw 0 var(--pad);will-change:transform}
+.s3-lead{flex:0 0 min(40vw,600px)}
+.s3-lead .stamp{margin-bottom:2rem}
+.s3-photo{flex:0 0 min(32vw,460px)}
+.skewer{position:relative;display:flex;align-items:center;gap:3.2vw;padding:0 8vw 0 2vw}
+.stick{position:absolute;left:-4vw;right:0;top:50%;height:5px;margin-top:-2.5px;border-radius:3px;background:linear-gradient(90deg,rgba(214,176,120,0),#d6b078 8%,#a37c49 92%);box-shadow:0 0 14px rgba(255,180,94,.25)}
+.stick::after{content:"";position:absolute;right:-26px;top:50%;margin-top:-5px;border-left:28px solid #a37c49;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.ball{position:relative;z-index:1;flex:0 0 clamp(150px,15vw,230px);aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.4;background:radial-gradient(circle at 36% 30%,#8a4a24 0%,#4a2412 38%,#1d0d06 72%);box-shadow:inset -14px -18px 34px rgba(0,0,0,.65),inset 8px 10px 22px rgba(255,170,90,.18),0 0 50px rgba(224,69,42,.22)}
+.ball span{font-family:"Yuji Syuku",serif;font-size:clamp(1.3rem,1.8vw,1.8rem)}
+.ball b{font-family:"Cormorant Garamond",serif;font-size:clamp(1.3rem,1.6vw,1.6rem);color:var(--amber);font-weight:600}
+
+/* ===== 22:15 二合目・品書き（吊り下げた短冊） ===== */
+.s3b{min-height:140vh}
+.s3b-grid{display:grid;grid-template-columns:minmax(260px,34vw) 1fr;gap:7vw;align-items:center}
+.s3b .stamp{margin-bottom:2rem}
+.tanzaku-wrap{position:relative;margin-top:20vh}
+.tanzaku-wrap::before{content:"";position:absolute;left:calc(var(--pad) * -1);right:calc(var(--pad) * -1);top:0;height:1px;background:rgba(242,231,213,.35);transform:rotate(-1deg)}
+.tanzaku-title{position:absolute;left:0;top:-2.8rem;font-size:.85rem;letter-spacing:.5em;color:var(--amber)}
+.tanzaku{display:flex;justify-content:space-between;gap:clamp(10px,2vw,32px);padding-top:18px;flex-wrap:wrap}
+.tanzaku li{position:relative;writing-mode:vertical-rl;display:flex;justify-content:space-between;align-items:center;min-height:clamp(230px,26vw,360px);padding:26px 12px;background:linear-gradient(180deg,#f3dfb9,#e6cc9e);color:#1d130c;font-family:"Yuji Syuku",serif;font-size:clamp(1.25rem,1.9vw,1.85rem);letter-spacing:.12em;line-height:1.3;box-shadow:0 26px 40px rgba(0,0,0,.5);transform-origin:50% -18px;animation:sway 6s ease-in-out infinite}
+.tanzaku li::before{content:"";position:absolute;top:-18px;left:50%;width:1px;height:18px;background:rgba(242,231,213,.5)}
+.tanzaku li:nth-child(2){animation-delay:-1.2s;min-height:clamp(260px,30vw,400px)}
+.tanzaku li:nth-child(3){animation-delay:-2.4s}
+.tanzaku li:nth-child(4){animation-delay:-3.1s;min-height:clamp(210px,24vw,330px)}
+.tanzaku li:nth-child(5){animation-delay:-4s;min-height:clamp(270px,32vw,420px)}
+.tanzaku li:nth-child(6){animation-delay:-.6s}
+.tanzaku em{font-style:normal;color:#a8301b;font-size:.8em}
+
+/* ===== 23:30 〆 ===== */
+.s4{min-height:130vh;display:grid;grid-template-columns:minmax(260px,34vw) 1fr;gap:7vw;align-items:center}
+.s4-mark{position:absolute;right:-4vw;top:8vh;font-weight:900;font-size:clamp(18rem,46vw,44rem);line-height:1;color:rgba(224,69,42,.14);pointer-events:none;z-index:0}
+.s4-photo{position:relative;z-index:2;margin-top:10vh}
+.s4-text{position:relative;z-index:3}
+.s4 .stamp{margin-bottom:2.4rem}
+.price{margin-top:2.4rem;display:flex;align-items:baseline;justify-content:space-between;gap:1.2rem;border-top:1px solid var(--line);padding-top:1.2rem;max-width:380px}
+.price b{font-family:"Cormorant Garamond",serif;font-size:2.4rem;color:var(--amber);font-weight:600}
+
+/* ===== 24:00 帰り道 ===== */
+.s5{min-height:100vh;padding:0;display:flex;align-items:center}
+.s5-photo{position:absolute;inset:0;overflow:hidden}
+.s5-photo img{width:100%;height:120%;object-fit:cover;object-position:35% 50%;filter:brightness(.82);will-change:transform}
+.s5-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,12,.05) 0%,rgba(5,6,12,.2) 45%,rgba(5,6,12,.9) 72%),linear-gradient(180deg,var(--bg) 0%,rgba(0,0,0,0) 18%)}
+.s5-text{position:relative;z-index:2;margin-left:auto;width:min(36vw,520px);margin-right:calc(var(--pad) + 20px);padding:16vh 0}
+.s5 .stamp{margin-bottom:2rem}
+.info{margin-top:2.6rem;border-top:1px solid var(--line)}
+.info div{display:grid;grid-template-columns:4.2em 1fr;padding:.8rem 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.info dt{color:var(--amber);letter-spacing:.3em}
+.cta{display:inline-flex;align-items:center;gap:1rem;margin-top:2.6rem;padding:1.05rem 2.2rem;border-radius:999px;background:var(--red);color:#fff;text-decoration:none;letter-spacing:.3em;box-shadow:0 0 40px rgba(224,69,42,.45);transition:transform .4s var(--ease),box-shadow .4s}
+.cta:hover{transform:translateY(-3px);box-shadow:0 0 60px rgba(224,69,42,.7)}
+.cta i{width:10px;height:12px;border-radius:50% / 46%;background:radial-gradient(circle at 50% 45%,#ffe0ad,#ffb45e 70%)}
+footer{position:relative;z-index:2;padding:40px var(--pad);font-size:.75rem;letter-spacing:.3em;color:var(--muted);display:flex;justify-content:space-between;gap:1rem;background:var(--ink)}
+
+/* ===== スマホ ===== */
+@media (max-width:760px){
+  .lamps{top:auto;bottom:18px;right:16px;transform:none;flex-direction:row;gap:10px}
+  #hdr{padding:16px 20px}
+  #clock{font-size:1.6rem}
+  .kv-lantern{width:88vw;right:-20vw;top:34%}
+  .kv-kanji{font-size:62vh;left:-12vw}
+  .kv-copy{bottom:13vh;right:20px}
+  .kv-scroll{display:none}
+  #core{width:120vw;right:-52vw;opacity:calc(var(--core-o) * .7)}
+  .scene{padding:16vh 20px}
+  .s1{flex-direction:column;align-items:stretch;min-height:auto;padding-top:20vh}
+  .s1 .stamp{position:relative;right:auto;top:auto;margin-bottom:2rem;order:-1}
+  .s1-photo{position:relative;top:auto;left:-20px;width:calc(100% + 40px);height:56vh}
+  .s1-text{width:auto;padding-top:0;margin-top:-10vh}
+  .s2{display:block;min-height:auto}
+  .s2 .stamp{position:relative;left:auto;top:auto;margin-bottom:1rem}
+  .s2-word{position:relative;left:-4px;top:auto;font-size:36vw;margin-bottom:-18vw}
+  .s2-photo{width:72vw;margin:0 0 0 auto}
+  .s2-text{padding-bottom:0;margin-top:-6vh}
+  .s3{height:560vh}
+  .s3-track{gap:12vw;padding:0 18vw 0 20px}
+  .s3-lead{flex-basis:84vw}
+  .s3-photo{flex-basis:74vw}
+  .ball{flex-basis:44vw}
+  .skewer{gap:8vw}
+  .s3b-grid{grid-template-columns:1fr;gap:3rem}
+  .s3b-photo{width:78vw}
+  .tanzaku{justify-content:center;row-gap:46px}
+  .tanzaku li,.tanzaku li:nth-child(n){min-height:200px;font-size:1.2rem}
+  .s4{display:block;min-height:auto}
+  .s4-photo{width:72vw;margin:0 0 3rem}
+  .s4-mark{font-size:80vw;right:-12vw;top:4vh}
+  .s5{display:block;min-height:auto;padding:0}
+  .s5-photo{position:relative;height:62vh}
+  .s5-photo::after{background:linear-gradient(0deg,var(--bg) 0%,rgba(0,0,0,0) 45%)}
+  .s5-text{width:auto;margin:-12vh 20px 0;padding:0 0 12vh}
+  .info div{grid-template-columns:3.6em 1fr}
+  footer{flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .r,.pop{opacity:1 !important;transform:none !important;filter:none !important}
+}
+.sample-badge{position:fixed;left:50%;top:24px;transform:translateX(-50%);z-index:30;padding:.4rem .9rem;border-radius:999px;background:rgba(5,6,12,.78);border:1px solid rgba(255,180,94,.55);color:#f2e7d5;font-size:.72rem;letter-spacing:.2em;white-space:nowrap;pointer-events:none}@media (max-width:760px){.sample-badge{top:auto;bottom:18px;left:16px;transform:none}}
+</style>
+<noscript><style>.r,.pop{opacity:1;transform:none;filter:none}</style></noscript>
+</head>
+<body>
+<p class="sample-badge">見本・架空の店</p>
+<div class="fx fx-back" aria-hidden="true">
+  <div id="bokeh"></div>
+  <div id="core"><div class="sway"><svg class="lantern-svg" viewBox="0 0 400 560"></svg></div></div>
+</div>
+<div class="fx fx-front" aria-hidden="true">
+  <div id="smoke"><i></i><i></i><i></i></div>
+  <div id="vig"></div>
+  <div id="grain"></div>
+</div>
+
+<header id="hdr">
+  <a class="logo" href="#top"><span class="mark"></span>小灯<small>KOTOMOSHI</small></a>
+  <div class="clock"><small>いま</small><span id="clock">17:30</span></div>
+</header>
+<ol class="lamps" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li></ol>
+
+<main>
+  <section class="kv" id="top" data-time="17:30" data-lamp="0">
+    <div class="kv-photo"><img class="px" data-speed=".16" src="01_路地の赤提灯.jpg" alt="西荻窪 線路沿い。灯りはじめた赤提灯が並ぶ路地"></div>
+    <div class="kv-kanji" aria-hidden="true">灯</div>
+    <div class="kv-lantern" aria-hidden="true"><div class="sway"><svg class="lantern-svg" viewBox="0 0 400 560"></svg></div></div>
+    <div class="kv-copy">
+      <p class="kv-eyebrow r">西荻窪 線路沿い ／ 十席の酒場</p>
+      <h1 class="kv-title"><span class="r">ただいま、</span><span class="r">の灯り。</span></h1>
+      <p class="kv-name r">炉ばた 小灯<em>KOTOMOSHI</em></p>
+    </div>
+    <a class="kv-scroll" href="#t1800">夜をすすめる<i></i></a>
+  </section>
+
+  <section class="scene s1" id="t1800" data-time="17:30" data-lamp="1">
+    <figure class="s1-photo r"><img class="px" data-speed=".12" src="01_路地の赤提灯.jpg" alt="赤提灯に灯りがはいった、夕方の西荻窪 線路沿いの路地"></figure>
+    <div class="stamp r"><b>17:30</b><span>のれんを上げる</span></div>
+    <div class="s1-text">
+      <h2 class="big r">17時半、<br>灯をいれる。</h2>
+      <p class="lead r">電車が通るたび、<br>窓が少しだけ鳴る。<br>線路沿いの、十席の店です。</p>
+    </div>
+  </section>
+
+  <section class="scene s2" id="t1930" data-time="19:30" data-lamp="2">
+    <div class="stamp r"><b>19:30</b><span>乾杯</span></div>
+    <div class="s2-word r" aria-hidden="true">乾杯</div>
+    <figure class="lantern s2-photo r"><img src="02_乾杯.jpg" alt="提灯の灯りの前で、ジョッキを合わせる二人の手"></figure>
+    <div class="s2-text">
+      <h2 class="big r">一杯目は、<br>何も考えない。</h2>
+      <ul class="drinks r">
+        <li><span>生ビール</span><b class="yen">650</b></li>
+        <li><span>緑茶ハイ</span><b class="yen">450</b></li>
+        <li><span>ハイボール</span><b class="yen">520</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="s3" id="t2100" data-time="21:00" data-lamp="3">
+    <div class="s3-sticky">
+      <div class="s3-track">
+        <div class="s3-lead">
+          <div class="stamp r"><b>21:00</b><span>焼き場</span></div>
+          <h2 class="big r">焼き場に、<br>火が入る。</h2>
+          <p class="lead r">炭火で、一本ずつ。<br>たれか塩かは、串ごとに決めてあります。</p>
+        </div>
+        <figure class="circle s3-photo r"><img src="03_つくね.jpg" alt="炭火で焼けていく、丸いつくねの串"></figure>
+        <div class="skewer" aria-label="串の品書き">
+          <i class="stick" aria-hidden="true"></i>
+          <div class="ball pop"><span>つくね</span><b class="yen">240</b></div>
+          <div class="ball pop"><span>ねぎま</span><b class="yen">220</b></div>
+          <div class="ball pop"><span>ささみ</span><b class="yen">200</b></div>
+          <div class="ball pop"><span>手羽先</span><b class="yen">260</b></div>
+          <div class="ball pop"><span>せせり</span><b class="yen">220</b></div>
+          <div class="ball pop"><span>しいたけ</span><b class="yen">180</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene s3b" id="t2215" data-time="22:15" data-lamp="3">
+    <div class="s3b-grid">
+      <figure class="circle s3b-photo r"><img src="04_お猪口.jpg" alt="提灯の灯りが映る、なみなみと注いだ猪口"></figure>
+      <div>
+        <div class="stamp r"><b>22:15</b><span>二合目</span></div>
+        <h2 class="big r">二合目からは、<br>猪口で。</h2>
+        <p class="lead r">日本酒は、その日に開けた四本だけ。<br>一合、七百五十円から。</p>
+      </div>
+    </div>
+    <div class="tanzaku-wrap r">
+      <p class="tanzaku-title">品書き</p>
+      <ul class="tanzaku">
+        <li><span>きんぴら</span><em>三八〇</em></li>
+        <li><span>厚揚げ</span><em>四二〇</em></li>
+        <li><span>焼きなす</span><em>四五〇</em></li>
+        <li><span>枝豆</span><em>三五〇</em></li>
+        <li><span>あじフライ</span><em>六八〇</em></li>
+        <li><span>ぬか漬け</span><em>三二〇</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="scene s4" id="t2330" data-time="23:30" data-lamp="4">
+    <div class="s4-mark r" aria-hidden="true">〆</div>
+    <figure class="lantern s4-photo r"><img src="05_土鍋ごはん.jpg" alt="ふたを開けた土鍋から、湯気が立ちのぼる"></figure>
+    <div class="s4-text">
+      <div class="stamp r"><b>23:30</b><span>〆</span></div>
+      <h2 class="big r">〆は、<br>土鍋で炊く。</h2>
+      <p class="lead r">注文から三十分。<br>待つ時間も、肴のうち。</p>
+      <p class="price r"><span>土鍋ごはん</span><b class="yen">950</b></p>
+    </div>
+  </section>
+
+  <section class="scene s5" id="t2400" data-time="24:00" data-lamp="5">
+    <figure class="s5-photo"><img class="px" data-speed=".1" src="06_帰り道.jpg" alt="真夜中の路地。提灯ひとつと、帰っていく人の背中"></figure>
+    <div class="s5-text">
+      <div class="stamp r"><b>24:00</b><span>帰り道</span></div>
+      <h2 class="big r">また、<br>灯りの下で。</h2>
+      <dl class="info r">
+        <div><dt>店</dt><dd>炉ばた 小灯（こともし）</dd></div>
+        <div><dt>場所</dt><dd>西荻窪駅から線路沿いに五分</dd></div>
+        <div><dt>時間</dt><dd>17:30 — 24:00</dd></div>
+        <div><dt>休み</dt><dd>火曜</dd></div>
+        <div><dt>席</dt><dd>カウンター六席、小上がり四席。予約できます</dd></div>
+      </dl>
+      <a class="cta r" href="#top"><i></i>今夜、寄る</a>
+    </div>
+  </section>
+</main>
+
+<footer><span>© 2026 炉ばた 小灯（見本・架空の店）</span><span>LPひな形の見本</span></footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; };
+
+  // 線で描いた提灯（基準4：視覚の核）
+  document.querySelectorAll('.lantern-svg').forEach((svg, idx) => {
+    const cx = 200, cy = 290, RX = 165, RY = 212, id = 'lg' + idx;
+    const defs = el('defs', {});
+    const grad = el('radialGradient', { id, cx: '50%', cy: '52%', r: '50%' });
+    grad.append(
+      el('stop', { offset: '0%', 'stop-color': '#ffe2b0', 'stop-opacity': '1' }),
+      el('stop', { offset: '42%', 'stop-color': '#ff8a45', 'stop-opacity': '.62' }),
+      el('stop', { offset: '100%', 'stop-color': '#e0452a', 'stop-opacity': '0' })
+    );
+    defs.append(grad);
+    svg.append(defs);
+    svg.append(el('ellipse', { class: 'l-core', cx, cy, rx: RX * 1.05, ry: RY * 1.02, fill: `url(#${id})` }));
+    svg.append(el('line', { class: 'l-string', x1: cx, y1: -40, x2: cx, y2: 60 }));
+    const top = cy - RY + 10, bot = cy + RY - 10;
+    const rxAt = y => { const t = (y - cy) / RY; return RX * Math.sqrt(Math.max(0, 1 - t * t)); };
+    for (let k = 0; k < 14; k++) {
+      const th = k / 14 * Math.PI * 2, pts = [];
+      for (let s = 0; s <= 48; s++) {
+        const y = top + (bot - top) * s / 48, rx = rxAt(y);
+        pts.push((cx + rx * Math.sin(th)).toFixed(1) + ',' + (y + rx * .12 * Math.cos(th)).toFixed(1));
+      }
+      svg.append(el('polyline', { class: 'l-mer ' + (Math.cos(th) > 0 ? 'front' : 'back'), points: pts.join(' ') }));
+    }
+    const N = 21;
+    for (let i = 0; i < N; i++) {
+      const y = top + (bot - top) * i / (N - 1), rx = rxAt(y);
+      svg.append(el('ellipse', { class: 'l-rib' + (i === (N - 1) / 2 ? ' l-equator' : ''), cx, cy: y.toFixed(1), rx: rx.toFixed(1), ry: (rx * .12).toFixed(1) }));
+    }
+    svg.append(el('rect', { class: 'l-cap', x: cx - 62, y: top - 30, width: 124, height: 28, rx: 4 }));
+    svg.append(el('rect', { class: 'l-cap', x: cx - 62, y: bot + 2, width: 124, height: 28, rx: 4 }));
+  });
+
+  // 奥の玉ボケ（基準7：奥行き）
+  const bokeh = document.getElementById('bokeh');
+  let seed = 7;
+  const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const dots = [];
+  for (let i = 0; i < 18; i++) {
+    const d = document.createElement('i');
+    const size = 18 + rand() * 130;
+    d.style.width = d.style.height = size + 'px';
+    d.style.left = (rand() * 100) + 'vw';
+    d.style.opacity = (.08 + rand() * .22).toFixed(2);
+    d.style.filter = `blur(${(size / 14).toFixed(1)}px)`;
+    bokeh.append(d);
+    dots.push({ d, base: rand() * 140, speed: .05 + rand() * .35 });
+  }
+  const placeDots = () => {
+    const vh = innerHeight, H = vh * 1.4;
+    dots.forEach(o => {
+      let y = (o.base / 100 * vh - (reduce ? 0 : scrollY * o.speed)) % H;
+      if (y < 0) y += H;
+      o.d.style.transform = `translate3d(0,${(y - vh * .2).toFixed(1)}px,0)`;
+    });
+  };
+
+  // 出てくる動き（基準5）
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('on');
+    io.unobserve(e.target);
+  }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('main section:not(.kv)').forEach(sc => {
+    sc.querySelectorAll('.r').forEach((n, i) => { n.style.transitionDelay = (Math.min(i, 6) * .09).toFixed(2) + 's'; io.observe(n); });
+    sc.querySelectorAll('.pop').forEach(n => io.observe(n));
+  });
+  const kvIn = () => document.querySelectorAll('.kv .r').forEach((n, i) => setTimeout(() => n.classList.add('on'), 250 + i * 180));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(kvIn); else kvIn();
+
+  // 夜が進む：時計・提灯の数・灯りの強さ・空の色（基準8）
+  const scenes = [...document.querySelectorAll('main [data-time]')];
+  const clock = document.getElementById('clock');
+  const lamps = [...document.querySelectorAll('.lamps li')];
+  const glowByLamp = [.38, .48, .62, .76, 1, .52];
+  let cur = -1;
+  const setScene = i => {
+    if (i === cur) return;
+    cur = i;
+    const s = scenes[i];
+    if (clock.textContent !== s.dataset.time) {
+      clock.textContent = s.dataset.time;
+      clock.classList.remove('tick'); void clock.offsetWidth; clock.classList.add('tick');
+    }
+    const lit = +s.dataset.lamp;
+    lamps.forEach((l, k) => l.classList.toggle('lit', k < lit));
+    root.style.setProperty('--glow', glowByLamp[lit]);
+  };
+  const sky = [[24, 34, 74], [11, 16, 36], [6, 7, 14]];
+  const bgAt = p => {
+    const seg = p < .5 ? 0 : 1, t = p < .5 ? p / .5 : (p - .5) / .5, A = sky[seg], B = sky[seg + 1];
+    return `rgb(${A.map((v, k) => Math.round(v + (B[k] - v) * t)).join(',')})`;
+  };
+
+  const kv = document.querySelector('.kv');
+  const s3 = document.querySelector('.s3'), track = document.querySelector('.s3-track');
+  const pxs = [...document.querySelectorAll('.px')];
+  let ticking = false;
+  const onScroll = () => {
+    ticking = false;
+    const y = scrollY, H = root.scrollHeight - innerHeight;
+    const p = H > 0 ? Math.min(1, y / H) : 0;
+    root.style.setProperty('--bg', bgAt(p));
+    const kvH = kv.offsetHeight;
+    root.style.setProperty('--core-o', (Math.min(1, Math.max(0, (y - kvH * .55) / (kvH * .6))) * .42).toFixed(3));
+    let idx = 0;
+    const line = innerHeight * .55;
+    scenes.forEach((s, i) => { if (s.getBoundingClientRect().top < line) idx = i; });
+    setScene(idx);
+    const r = s3.getBoundingClientRect(), total = s3.offsetHeight - innerHeight;
+    const raw = total > 0 ? -r.top / total : 0;
+    const prog = Math.min(1, Math.max(0, (raw - .08) / .84));
+    const max = Math.max(0, track.scrollWidth - innerWidth);
+    track.style.transform = `translate3d(${(-prog * max).toFixed(1)}px,0,0)`;
+    if (!reduce) pxs.forEach(img => {
+      const b = img.parentElement.getBoundingClientRect(), h = b.height;
+      const c = b.top + h / 2 - innerHeight / 2;
+      const t = Math.max(-h * .2, Math.min(0, -c * (+img.dataset.speed || .12) - h * .1));
+      img.style.transform = `translate3d(0,${t.toFixed(1)}px,0)`;
+    });
+    placeDots();
+  };
+  const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } };
+  addEventListener('scroll', req, { passive: true });
+  addEventListener('resize', req);
+  onScroll();
+})();
+</script>
+</body>
+</html>
