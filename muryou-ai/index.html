@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【見本・架空の店】酒場 丸灯（まるび）｜無料のAIに1回頼んだだけのLP</title>
+    <meta name="description" content="比べるための見本です。酒場 丸灯は架空の店で、実在しません。無料のAIに1回頼んで作成。">
+    <meta name="robots" content="noindex">
+    <style>
+        /* --- 基本設定 --- */
+        :root {
+            --bg-color: #1a1816;       /* 暗く温かみのある背景色 */
+            --card-bg: #24211e;        /* セクション・カード背景 */
+            --text-color: #e6e4df;     /* メイン文字色 */
+            --accent-color: #d9532f;   /* 灯火をイメージした赤・朱色 */
+            --gold-color: #cbb26a;     /* 日本酒や土鍋をイメージした金・黄土色 */
+            --border-color: #3d3833;   /* 区切り線 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- ヘッダー / HERO --- */
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(180deg, rgba(217,83,47,0.05) 0%, rgba(26,24,22,1) 100%);
+        }
+
+        .badge {
+            display: inline-block;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            padding: 4px 16px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: normal;
+            margin-bottom: 10px;
+            letter-spacing: 0.15em;
+            color: #fff;
+        }
+
+        .ruby {
+            font-size: 1rem;
+            color: var(--gold-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .hero-lead {
+            margin-top: 25px;
+            font-size: 1.1rem;
+            color: #b5b0a8;
+        }
+
+        /* --- コンセプト・お店の特徴 --- */
+        .concept {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: var(--card-bg);
+            margin: 40px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .concept p {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            color: var(--gold-color);
+            font-size: 1.2rem;
+            display: block;
+            margin-top: 15px;
+        }
+
+        /* --- セクション共通 --- */
+        section {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: normal;
+            margin-bottom: 30px;
+            position: relative;
+            color: var(--gold-color);
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 1px;
+            background-color: var(--gold-color);
+            margin: 10px auto 0;
+        }
+
+        /* --- メニュー --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-category {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .menu-category-title {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .menu-list {
+            list-style: none;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .menu-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .menu-item .dots {
+            flex-grow: 1;
+            border-bottom: 1px dotted #4a443f;
+            margin: 0 10px;
+        }
+
+        .price {
+            font-family: sans-serif;
+            color: #d1cdb8;
+        }
+
+        .note {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* ピックアップ（土鍋ごはん） */
+        .featured-item {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--card-bg) 0%, #2e2823 100%);
+            border: 1px solid var(--gold-color);
+            padding: 25px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .featured-item h3 {
+            color: var(--gold-color);
+            margin-bottom: 10px;
+        }
+
+        /* --- インフォメーション --- */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .info-table th, .info-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .info-table th {
+            width: 30%;
+            color: var(--gold-color);
+            font-weight: normal;
+            vertical-align: top;
+            background-color: rgba(0,0,0,0.2);
+        }
+
+        .no-reserve {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 2px;
+            margin-left: 8px;
+        }
+
+        /* --- フッター --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            color: #777;
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+
+        /* --- スマホ調整 --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .info-table th, .info-table td {
+                display: block;
+                width: 100%;
+            }
+            .info-table th {
+                padding-bottom: 5px;
+                background-color: transparent;
+            }
+            .info-table td {
+                padding-top: 0;
+            }
+        }
+    .sample-badge{position:fixed;left:50%;top:24px;transform:translateX(-50%);z-index:30;margin:0;padding:.4rem .9rem;border-radius:999px;background:rgba(5,6,12,.78);border:1px solid rgba(255,180,94,.55);color:#f2e7d5;font-size:.72rem;letter-spacing:.2em;line-height:1.4;white-space:nowrap;pointer-events:none;font-family:"Hiragino Mincho ProN","Yu Mincho",serif}@media (max-width:760px){.sample-badge{top:auto;bottom:18px;left:16px;transform:none}.sample-badge-sub{display:none}}
+</style>
+</head>
+<body>
+<p class="sample-badge">見本・架空の店<span class="sample-badge-sub">（無料のAIに1回で作成）</span></p>
+
+    <!-- ヘッダー -->
+    <header>
+        <div class="container">
+            <span class="badge">高円寺 高架下</span>
+            <h1>
+                <span class="ruby">さかば まるび</span>
+                酒場 丸灯
+            </h1>
+            <p class="hero-lead">ふらりと寄れる、カウンター七席の小酒場。</p>
+        </div>
+    </header>
+
+    <!-- コンセプト -->
+    <div class="concept">
+        <div class="container">
+            <p>高円寺駅から高架沿いに歩いて三分。</p>
+            <p>電車の音をのぞき込みながら、今宵も明かりを灯しています。</p>
+            <span class="highlight">予約はいりません。いつでも気軽にお越しください。</span>
+        </div>
+    </div>
+
+    <!-- お品書き -->
+    <section class="container">
+        <h2 class="section-title">お品書き</h2>
+
+        <div class="menu-grid">
+            
+            <!-- 串焼き -->
+            <div class="menu-category">
+                <h3 class="menu-category-title">串</h3>
+                <ul class="menu-list">
+                    <li class="menu-item"><span>つくね</span><span class="dots"></span><span class="price">220円</span></li>
+                    <li class="menu-item"><span>ねぎま</span><span class="dots"></span><span class="price">200円</span></li>
+                    <li class="menu-item"><span>ぼんじり</span><span class="dots"></span><span class="price">200円</span></li>
+                    <li class="menu-item"><span>もも</span><span class="dots"></span><span class="price">180円</span></li>
+                    <li class="menu-item"><span>レバー</span><span class="dots"></span><span class="price">180円</span></li>
+                    <li class="menu-item"><span>かわ</span><span class="dots"></span><span class="price">160円</span></li>
+                </ul>
+            </div>
+
+            <!-- 一品 -->
+            <div class="menu-category">
+                <h3 class="menu-category-title">一品</h3>
+                <ul class="menu-list">
+                    <li class="menu-item"><span>刺身三点盛り</span><span class="dots"></span><span class="price">1,280円</span></li>
+                    <li class="menu-item"><span>もつ煮込み</span><span class="dots"></span><span class="price">580円</span></li>
+                    <li class="menu-item"><span>だし巻き</span><span class="dots"></span><span class="price">520円</span></li>
+                    <li class="menu-item"><span>ポテサラ</span><span class="dots"></span><span class="price">450円</span></li>
+                    <li class="menu-item"><span>冷やしトマト</span><span class="dots"></span><span class="price">380円</span></li>
+                    <li class="menu-item"><span>浅漬け</span><span class="dots"></span><span class="price">300円</span></li>
+                </ul>
+            </div>
+
+            <!-- お飲み物 -->
+            <div class="menu-category">
+                <h3 class="menu-category-title">お酒</h3>
+                <ul class="menu-list">
+                    <li class="menu-item"><span>生ビール</span><span class="dots"></span><span class="price">600円</span></li>
+                    <li class="menu-item"><span>ハイボール</span><span class="dots"></span><span class="price">500円</span></li>
+                    <li class="menu-item"><span>レモンサワー</span><span class="dots"></span><span class="price">480円</span></li>
+                </ul>
+            </div>
+
+            <!-- 日本酒 -->
+            <div class="menu-category">
+                <h3 class="menu-category-title">本日のおすすめ日本酒</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">その日に開けた三本だけをご用意しております。</p>
+                <ul class="menu-list">
+                    <li class="menu-item"><span>日本酒（一合）</span><span class="dots"></span><span class="price">700円〜</span></li>
+                </ul>
+            </div>
+
+            <!-- 〆（土鍋ごはん） -->
+            <div class="featured-item">
+                <h3>〆のお食事</h3>
+                <div class="menu-item" style="max-width: 400px; margin: 0 auto;">
+                    <span style="font-size: 1.1rem; font-weight: bold;">土鍋ごはん</span>
+                    <span class="dots"></span>
+                    <span class="price" style="font-size: 1.1rem;">900円</span>
+                </div>
+                <p class="note">※じっくり炊き上げますので、ご注文から25分ほどお時間をいただきます。</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 店舗情報 -->
+    <section class="container">
+        <h2 class="section-title">店舗案内</h2>
+        <table class="info-table">
+            <tr>
+                <th>店名</th>
+                <td>酒場 丸灯（まるび）</td>
+            </tr>
+            <tr>
+                <th>席数</th>
+                <td>カウンター7席 <span class="no-reserve">予約不要</span></td>
+            </tr>
+            <tr>
+                <th>営業時間</th>
+                <td>18:00 〜 翌1:00</td>
+            </tr>
+            <tr>
+                <th>定休日</th>
+                <td>月曜日</td>
+            </tr>
+            <tr>
+                <th>場所</th>
+                <td>JR高円寺駅から高架沿いに徒歩3分（高架下）</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <p>&copy; 酒場 丸灯（見本・架空の店）｜無料のAIに1回頼んだだけのLP</p>
+        </div>
+    </footer>
+
+</body>
+</html>
