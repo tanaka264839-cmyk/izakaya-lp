@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>豚骨ラーメン</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Shippori Mincho', 'Zen Old Mincho', serif;
+      background-color: #0d0a09;
+      color: #f6ebd9;
+      overflow-x: hidden;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
+    /* Fixed Canvas & Background Layer */
+    .bg-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      background: radial-gradient(circle at center, #261610 0%, #0d0a09 100%);
+      transition: background 1s ease;
+      pointer-events: none;
+    }
+
+    /* Floating Particles Layer */
+    .particles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(235, 180, 100, 0.4);
+    }
+
+    /* Curved Dividers SVG */
+    .divider-svg {
+      width: 100%;
+      height: 80px;
+      display: block;
+    }
+
+    /* Top Right Clock */
+    .clock-badge {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      background: rgba(13, 10, 9, 0.75);
+      border: 1px solid rgba(212, 160, 83, 0.4);
+      backdrop-filter: blur(8px);
+      padding: 8px 18px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .clock-icon {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #d4a053;
+      border-radius: 50%;
+      position: relative;
+    }
+    .clock-icon::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 6px;
+      width: 1.5px;
+      height: 5px;
+      background: #d4a053;
+    }
+    .clock-time {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #f3d498;
+    }
+
+    /* Bottom Floating CTA Button (Mobile) */
+    .bottom-cta {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99;
+      width: calc(100% - 40px);
+      max-width: 400px;
+      background: linear-gradient(135deg, #c8321a 0%, #991c09 100%);
+      color: #fff;
+      text-align: center;
+      padding: 16px 0;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      box-shadow: 0 8px 25px rgba(200, 50, 26, 0.5);
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: block;
+    }
+    @media (min-width: 769px) {
+      .bottom-cta {
+        display: none;
+      }
+    }
+
+    /* General Typography & Utility */
+    .vertical-text {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      letter-spacing: 0.25em;
+    }
+    .section-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #f3d498;
+      line-height: 1.4;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    /* Main Sections Layout */
+    .section-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+    }
+    .hero-container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    @media (min-width: 769px) {
+      .hero-container {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .hero-catch {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.8;
+      color: #f6ebd9;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.9);
+      margin-bottom: 30px;
+      z-index: 15;
+    }
+    @media (min-width: 769px) {
+      .hero-catch {
+        font-size: 3.2rem;
+        margin-bottom: 0;
+      }
+    }
+
+    /* Sphere & Tag Container */
+    .hero-visual-area {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (min-width: 769px) {
+      .hero-visual-area {
+        width: 480px;
+        height: 480px;
+      }
+    }
+
+    /* Wireframe Golden Sphere (Corrected dashed border) */
+    .wire-sphere {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 200, 100, 0.4);
+      position: relative;
+      box-shadow: inset 0 0 30px rgba(255, 200, 100, 0.1), 0 0 30px rgba(255, 200, 100, 0.15);
+      animation: spinSphere 25s linear infinite;
+    }
+    @media (min-width: 769px) {
+      .wire-sphere {
+        width: 380px;
+        height: 380px;
+      }
+    }
+    .wire-sphere::before, .wire-sphere::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 200, 100, 0.3);
+    }
+    .wire-sphere::before { transform: rotateX(60deg); }
+    .wire-sphere::after { transform: rotateY(60deg); }
+
+    @keyframes spinSphere {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Price Tags Outside Sphere with Connecting Lines */
+    .price-tag-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .tag-item {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+    .tag-line {
+      height: 1px;
+      background: rgba(212, 160, 83, 0.6);
+    }
+    .tag-label {
+      background: rgba(13, 10, 9, 0.85);
+      border: 1px solid rgba(212, 160, 83, 0.6);
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      color: #f6ebd9;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    }
+
+    /* Positioned tags outside sphere */
+    .tag-pos-1 { top: 15%; right: -25px; }
+    .tag-pos-1 .tag-line { width: 35px; }
+    
+    .tag-pos-2 { bottom: 20%; left: -35px; }
+    .tag-pos-2 .tag-line { width: 35px; order: 2; }
+    .tag-pos-2 .tag-label { order: 1; }
+
+    /* CONCEPT & STORY SECTION (10:00 - Morning) */
+    .story-section {
+      padding: 100px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      width: 100%;
+      margin-top: 30px;
+    }
+    @media (min-width: 769px) {
+      .story-grid {
+        grid-template-columns: 1fr 1.2fr;
+        align-items: center;
+      }
+    }
+    .story-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(212, 160, 83, 0.2);
+      padding: 30px;
+      border-radius: 12px;
+      line-height: 2;
+      font-size: 1.1rem;
+    }
+
+    /* COMMITMENT SECTION (12:00 - Noon) */
+    .commitment-section {
+      padding: 100px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .commitment-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    @media (min-width: 769px) {
+      .commitment-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .commit-card {
+      background: rgba(20, 15, 12, 0.7);
+      border: 1px solid rgba(212, 160, 83, 0.3);
+      border-radius: 8px;
+      padding: 30px 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .commit-card h3 {
+      font-size: 1.6rem;
+      color: #d4a053;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(212, 160, 83, 0.3);
+      padding-bottom: 10px;
+    }
+    .commit-card p {
+      line-height: 1.8;
+      font-size: 1rem;
+      color: #e2d5c3;
+    }
+
+    /* HORIZONTAL SCROLL MENU SECTION (15:00 - Afternoon) */
+    .menu-scroll-outer {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    .menu-scroll-inner {
+      display: flex;
+      width: max-content;
+      padding: 60px 20px;
+      gap: 40px;
+    }
+    .menu-card {
+      width: 320px;
+      background: rgba(20, 15, 12, 0.85);
+      border: 1px solid rgba(212, 160, 83, 0.3);
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+    }
+    @media (min-width: 769px) {
+      .menu-card {
+        width: 380px;
+        padding: 40px;
+      }
+    }
+    .menu-card h3 {
+      font-size: 1.6rem;
+      white-space: nowrap;
+      color: #f6ebd9;
+      margin: 20px 0 10px 0;
+      text-align: center;
+    }
+    .menu-card .price {
+      font-size: 1.3rem;
+      color: #d4a053;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    /* SVG ARTWORK STYLING */
+    .ramen-bowl-svg, .side-dish-svg {
+      width: 220px;
+      height: 220px;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.7));
+    }
+    @media (min-width: 769px) {
+      .ramen-bowl-svg, .side-dish-svg {
+        width: 260px;
+        height: 260px;
+      }
+    }
+
+    /* SIDE & TOPPING GRID SECTION */
+    .sub-menu-section {
+      padding: 80px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .sub-menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    @media (min-width: 769px) {
+      .sub-menu-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .sub-menu-box {
+      background: rgba(20, 15, 12, 0.6);
+      border: 1px solid rgba(212, 160, 83, 0.25);
+      padding: 35px;
+      border-radius: 12px;
+    }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px dashed rgba(212, 160, 83, 0.2);
+    }
+    .item-row:last-child {
+      border-bottom: none;
+    }
+    .item-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .item-price {
+      font-size: 1.1rem;
+      color: #d4a053;
+    }
+
+    /* STORE INFO SECTION (21:00 - Night) */
+    .info-section {
+      padding: 100px 20px 140px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .info-table th, .info-table td {
+      padding: 20px;
+      border-bottom: 1px solid rgba(212, 160, 83, 0.25);
+      text-align: left;
+      font-size: 1.1rem;
+    }
+    .info-table th {
+      width: 25%;
+      color: #d4a053;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .hours-text {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* Responsive Adjustments for Mobile */
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 2rem;
+      }
+      .info-table th, .info-table td {
+        padding: 14px 10px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Background & Particle Layers -->
+  <div class="bg-layer" id="bgLayer"></div>
+  <div class="particles-container" id="particlesContainer"></div>
+
+  <!-- Top Fixed Clock Badge -->
+  <div class="clock-badge">
+    <div class="clock-icon"></div>
+    <div class="clock-time" id="clockTime">10:00</div>
+  </div>
+
+  <!-- Bottom Floating CTA (Mobile) -->
+  <a href="#store-info" class="bottom-cta">来店する</a>
+
+  <div class="section-wrapper">
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-container">
+        <h1 class="hero-catch vertical-text">極上の豚骨スープ、ここに極まる</h1>
+        
+        <div class="hero-visual-area">
+          <div class="wire-sphere"></div>
+          
+          <!-- External Tag Labels Connected with Lines -->
+          <div class="price-tag-container">
+            <div class="tag-item tag-pos-1">
+              <div class="tag-line"></div>
+              <div class="tag-label">豚骨ラーメン 780円</div>
+            </div>
+            <div class="tag-item tag-pos-2">
+              <div class="tag-label">チャーシューメン 980円</div>
+              <div class="tag-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Curved Divider SVG 1 -->
+    <svg class="divider-svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,30 C360,80 1080,0 1440,50 L1440,80 L0,80 Z" fill="rgba(20, 15, 12, 0.5)"/>
+    </svg>
+
+    <!-- CONCEPT / MORNING SECTION (10:00) -->
+    <section class="story-section" id="scene-1000">
+      <h2 class="section-title vertical-text">暖簾をくぐれば高まる期待</h2>
+      
+      <div class="story-grid">
+        <div style="text-align: center;">
+          <!-- SVG Illustration: Store Preparation / Morning Vibe -->
+          <svg class="ramen-bowl-svg" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="85" fill="#1e1613" stroke="#d4a053" stroke-width="4"/>
+            <path d="M 40 100 Q 100 40 160 100" fill="none" stroke="#e8c382" stroke-width="3" stroke-dasharray="6,6"/>
+            <text x="100" y="110" font-family="Shippori Mincho" font-size="18" fill="#d4a053" text-anchor="middle">準備完了</text>
+          </svg>
+        </div>
+        <div class="story-card">
+          一歩足を踏み入れれば、深く濃厚な豚骨の香りが漂う空間。丁寧な手仕事が生み出す至高の杯をご堪能ください。
+        </div>
+      </div>
+    </section>
+
+    <!-- Curved Divider SVG 2 -->
+    <svg class="divider-svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,50 C400,0 1040,70 1440,20 L1440,80 L0,80 Z" fill="rgba(13, 10, 9, 0.8)"/>
+    </svg>
+
+    <!-- COMMITMENT SECTION (12:00 - Noon Peak) -->
+    <section class="commitment-section" id="scene-1200">
+      <h2 class="section-title vertical-text">こだわり</h2>
+      
+      <div class="commitment-grid">
+        <div class="commit-card">
+          <h3>スープ</h3>
+          <p>厳選した豚骨を極限まで煮込み、濃厚でコクのあるまろやかな味わいに仕上げています。</p>
+        </div>
+        <div class="commit-card">
+          <h3>麺（硬さを選べる）</h3>
+          <p>スープとの絡みを追求した極細ストレート麺。バリカタからやわめまでお好みの硬さをお選びいただけます。</p>
+        </div>
+        <div class="commit-card">
+          <h3>具材</h3>
+          <p>じっくりと煮込んだ特製チャーシュー、新鮮な青ネギ、食感のアクセントとなるキクラゲが調和します。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HORIZONTAL SCROLL MENU SECTION (15:00 - Afternoon) -->
+    <section class="menu-scroll-outer" id="scene-1500">
+      <div style="padding-left: 5vw; padding-top: 40px;">
+        <h2 class="section-title vertical-text">お品書き</h2>
+      </div>
+      
+      <div class="menu-scroll-inner" id="menuInner">
+        
+        <!-- TONKOTSU RAMEN BOWL -->
+        <div class="menu-card">
+          <svg class="ramen-bowl-svg" viewBox="0 0 300 300">
+            <!-- Outer Rim & Lighting -->
+            <circle cx="150" cy="150" r="135" fill="#1a1412" stroke="#d4a053" stroke-width="8"/>
+            <circle cx="150" cy="150" r="126" fill="none" stroke="#f6ebd9" stroke-width="1.5" opacity="0.6"/>
+            <!-- Soup Base -->
+            <circle cx="150" cy="150" r="120" fill="#7a471d"/>
+            <!-- Oil Droplets / Sheen -->
+            <circle cx="130" cy="110" r="8" fill="#d99b43" opacity="0.6"/>
+            <circle cx="170" cy="130" r="12" fill="#e0aa53" opacity="0.5"/>
+            <circle cx="110" cy="160" r="6" fill="#c48833" opacity="0.7"/>
+            <circle cx="180" cy="170" r="9" fill="#d99b43" opacity="0.6"/>
+            
+            <!-- Layered Fine Noodles (Left / Center) -->
+            <g stroke="#fceabb" stroke-width="2.5" fill="none" opacity="0.85">
+              <path d="M 80 130 C 100 110, 130 150, 150 130"/>
+              <path d="M 85 140 C 105 120, 135 160, 155 140"/>
+              <path d="M 90 150 C 110 130, 140 170, 160 150"/>
+              <path d="M 82 160 C 102 140, 132 180, 152 160"/>
+            </g>
+            
+            <!-- Chashu Slice (Fat layer & Meat detail - Upper Right) -->
+            <g transform="translate(160, 85) rotate(-15)">
+              <ellipse cx="35" cy="25" rx="35" ry="22" fill="#5c2b18" stroke="#8c4427" stroke-width="2"/>
+              <path d="M 5 25 C 20 10, 50 10, 65 25" fill="none" stroke="#e8c4a0" stroke-width="5" opacity="0.9"/>
+              <path d="M 12 26 C 25 18, 45 18, 58 26" fill="none" stroke="#3b170b" stroke-width="2"/>
+            </g>
+            
+            <!-- Green Onions (Negi) -->
+            <circle cx="115" cy="110" r="4" fill="#2d7a3a"/>
+            <circle cx="125" cy="105" r="3.5" fill="#389447"/>
+            <circle cx="120" cy="118" r="4" fill="#2d7a3a"/>
+            <circle cx="132" cy="114" r="3" fill="#4cb05c"/>
+            <circle cx="110" cy="122" r="4" fill="#389447"/>
+            
+            <!-- Kikurage (Black Fungus Strips - Bottom Right) -->
+            <path d="M 160 180 Q 175 165 190 185 Q 175 200 160 180" fill="#1c1917"/>
+            <path d="M 175 175 Q 185 160 195 175 Q 185 190 175 175" fill="#2b2623"/>
+          </svg>
+          
+          <h3>豚骨ラーメン</h3>
+          <div class="price">780円</div>
+        </div>
+
+        <!-- CHARSIU RAMEN BOWL -->
+        <div class="menu-card">
+          <svg class="ramen-bowl-svg" viewBox="0 0 300 300">
+            <!-- Rim -->
+            <circle cx="150" cy="150" r="135" fill="#1a1412" stroke="#d4a053" stroke-width="8"/>
+            <circle cx="150" cy="150" r="126" fill="none" stroke="#f6ebd9" stroke-width="1.5" opacity="0.6"/>
+            <!-- Soup Base -->
+            <circle cx="150" cy="150" r="120" fill="#7a471d"/>
+            <!-- Oil Glow -->
+            <circle cx="150" cy="150" r="60" fill="#e0aa53" opacity="0.3"/>
+            
+            <!-- Noodles Center -->
+            <g stroke="#fceabb" stroke-width="2.5" fill="none" opacity="0.8">
+              <path d="M 120 120 Q 150 100 180 120"/>
+              <path d="M 115 135 Q 150 115 185 135"/>
+              <path d="M 120 150 Q 150 130 180 150"/>
+            </g>
+
+            <!-- 4 Distinct Chashu Slices around the rim -->
+            <!-- Top Slice -->
+            <g transform="translate(115, 45) rotate(0)">
+              <ellipse cx="35" cy="22" rx="36" ry="22" fill="#5c2b18" stroke="#8c4427" stroke-width="2"/>
+              <path d="M 5 22 C 20 8, 50 8, 65 22" fill="none" stroke="#e8c4a0" stroke-width="5"/>
+            </g>
+            <!-- Right Slice -->
+            <g transform="translate(175, 105) rotate(75)">
+              <ellipse cx="35" cy="22" rx="36" ry="22" fill="#5c2b18" stroke="#8c4427" stroke-width="2"/>
+              <path d="M 5 22 C 20 8, 50 8, 65 22" fill="none" stroke="#e8c4a0" stroke-width="5"/>
+            </g>
+            <!-- Bottom Slice -->
+            <g transform="translate(115, 165) rotate(180)">
+              <ellipse cx="35" cy="22" rx="36" ry="22" fill="#5c2b18" stroke="#8c4427" stroke-width="2"/>
+              <path d="M 5 22 C 20 8, 50 8, 65 22" fill="none" stroke="#e8c4a0" stroke-width="5"/>
+            </g>
+            <!-- Left Slice -->
+            <g transform="translate(55, 105) rotate(-75)">
+              <ellipse cx="35" cy="22" rx="36" ry="22" fill="#5c2b18" stroke="#8c4427" stroke-width="2"/>
+              <path d="M 5 22 C 20 8, 50 8, 65 22" fill="none" stroke="#e8c4a0" stroke-width="5"/>
+            </g>
+
+            <!-- Center Toppings -->
+            <circle cx="150" cy="145" r="5" fill="#2d7a3a"/>
+            <circle cx="156" cy="152" r="4" fill="#389447"/>
+            <circle cx="144" cy="154" r="4.5" fill="#4cb05c"/>
+          </svg>
+
+          <h3>チャーシューメン</h3>
+          <div class="price">980円</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SIDE DISHES & TOPPINGS SECTION -->
+    <section class="sub-menu-section">
+      <div class="sub-menu-grid">
+        
+        <!-- SIDE DISHES WITH DETAILED ARTWORK -->
+        <div class="sub-menu-box">
+          <h2 class="section-title vertical-text" style="font-size: 1.8rem; margin-bottom: 1.5rem;">サイドメニュー</h2>
+          
+          <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 25px;">
+            <!-- Gyoza SVG (Pleats & Sear Marks) -->
+            <svg class="side-dish-svg" viewBox="0 0 160 160" style="width: 120px; height: 120px;">
+              <rect x="10" y="10" width="140" height="140" rx="12" fill="#1e1815" stroke="#d4a053" stroke-width="2"/>
+              <!-- Gyoza 1 -->
+              <g transform="translate(35, 30)">
+                <path d="M 10 35 Q 40 10 70 35 Z" fill="#eed5b7" stroke="#c49a6c" stroke-width="2"/>
+                <!-- Golden Sear Bottom -->
+                <path d="M 12 33 Q 40 22 68 33" fill="none" stroke="#8a4316" stroke-width="4"/>
+                <!-- Pleats -->
+                <path d="M 25 20 L 23 28 M 40 15 L 40 25 M 55 20 L 57 28" stroke="#a67c52" stroke-width="2"/>
+              </g>
+              <!-- Gyoza 2 -->
+              <g transform="translate(35, 75)">
+                <path d="M 10 35 Q 40 10 70 35 Z" fill="#eed5b7" stroke="#c49a6c" stroke-width="2"/>
+                <path d="M 12 33 Q 40 22 68 33" fill="none" stroke="#8a4316" stroke-width="4"/>
+                <path d="M 25 20 L 23 28 M 40 15 L 40 25 M 55 20 L 57 28" stroke="#a67c52" stroke-width="2"/>
+              </g>
+            </svg>
+
+            <!-- Fried Rice SVG (Mound of Grains) -->
+            <svg class="side-dish-svg" viewBox="0 0 160 160" style="width: 120px; height: 120px;">
+              <ellipse cx="80" cy="115" rx="65" ry="25" fill="#2b221e" stroke="#d4a053" stroke-width="2"/>
+              <!-- Mound of Rice -->
+              <path d="M 30 110 Q 80 35 130 110 Z" fill="#e6b85c"/>
+              <!-- Individual Grain Texture & Egg/Chashu bits -->
+              <ellipse cx="70" cy="70" rx="5" ry="3" fill="#fff5d6" transform="rotate(20 70 70)"/>
+              <ellipse cx="90" cy="75" rx="5" ry="3" fill="#fff5d6" transform="rotate(-15 90 75)"/>
+              <ellipse cx="80" cy="90" rx="5" ry="3" fill="#fff5d6" transform="rotate(40 80 90)"/>
+              <ellipse cx="105" cy="95" rx="5" ry="3" fill="#fff5d6" transform="rotate(-30 105 95)"/>
+              <ellipse cx="55" cy="95" rx="5" ry="3" fill="#fff5d6" transform="rotate(10 55 95)"/>
+              <!-- Green Onion & Red Bits -->
+              <circle cx="75" cy="80" r="3" fill="#2d7a3a"/>
+              <circle cx="95" cy="88" r="3" fill="#c8321a"/>
+              <circle cx="65" cy="88" r="2.5" fill="#2d7a3a"/>
+            </svg>
+          </div>
+
+          <div class="item-row">
+            <span class="item-name">餃子</span>
+            <span class="item-price">350円</span>
+          </div>
+          <div class="item-row">
+            <span class="item-name">チャーハン</span>
+            <span class="item-price">600円</span>
+          </div>
+          <div class="item-row">
+            <span class="item-name">半チャーハン</span>
+            <span class="item-price">350円</span>
+          </div>
+        </div>
+
+        <!-- TOPPINGS -->
+        <div class="sub-menu-box">
+          <h2 class="section-title vertical-text" style="font-size: 1.8rem; margin-bottom: 1.5rem;">トッピング</h2>
+          <div class="item-row">
+            <span class="item-name">替玉</span>
+            <span class="item-price">120円</span>
+          </div>
+          <div class="item-row">
+            <span class="item-name">煮玉子</span>
+            <span class="item-price">100円</span>
+          </div>
+          <div class="item-row">
+            <span class="item-name">チャーシュー</span>
+            <span class="item-price">200円</span>
+          </div>
+          <div class="item-row">
+            <span class="item-name">ネギ</span>
+            <span class="item-price">100円</span>
+          </div>
+          <div class="item-row">
+            <span class="item-name">キクラゲ</span>
+            <span class="item-price">100円</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Curved Divider SVG 3 -->
+    <svg class="divider-svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,20 C480,80 960,10 1440,60 L1440,80 L0,80 Z" fill="rgba(8, 6, 5, 0.95)"/>
+    </svg>
+
+    <!-- STORE INFO / NIGHT SECTION (21:00 - Closing) -->
+    <section class="info-section" id="store-info">
+      <h2 class="section-title vertical-text">店舗情報</h2>
+      
+      <table class="info-table">
+        <tr>
+          <th>営業時間</th>
+          <td>
+            <span class="hours-text">10:00〜21:00</span><br>
+            <span class="hours-text">木曜定休</span>
+          </td>
+        </tr>
+        <tr>
+          <th>席数</th>
+          <td>カウンター12席、テーブル4席</td>
+        </tr>
+        <tr>
+          <th>決済方法</th>
+          <td>現金のみ</td>
+        </tr>
+      </table>
+    </section>
+
+  </div>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. Create 3 Layers of Floating Particles
+    const particlesContainer = document.getElementById('particlesContainer');
+    const particleCounts = [15, 20, 25]; // 3 distinct layers
+    
+    particleCounts.forEach((count, layerIndex) => {
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = (layerIndex + 1) * 3 + Math.random() * 4;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.left = `${Math.random() * 100}vw`;
+        p.style.top = `${Math.random() * 100}vh`;
+        p.style.opacity = (0.2 + Math.random() * 0.5).toString();
+        particlesContainer.appendChild(p);
+
+        // Animate each layer at different speed ratios
+        const speed = (3 - layerIndex) * 15 + Math.random() * 10;
+        gsap.to(p, {
+          y: '-=120vh',
+          x: '+=' + (Math.random() * 80 - 40),
+          duration: speed,
+          repeat: -1,
+          ease: 'none',
+          delay: -Math.random() * speed
+        });
+      }
+    });
+
+    // 2. Sequential ScrollTriggers (Top to Bottom Order strictly preserved)
+    const bgLayer = document.getElementById('bgLayer');
+    const clockTime = document.getElementById('clockTime');
+
+    // Scene 1: 10:00 (Morning Light Warm Brown)
+    ScrollTrigger.create({
+      trigger: '#scene-1000',
+      start: 'top 70%',
+      onEnter: () => {
+        bgLayer.style.background = 'radial-gradient(circle at center, #3a2218 0%, #0d0a09 100%)';
+        clockTime.textContent = '10:00';
+      },
+      onLeaveBack: () => {
+        bgLayer.style.background = 'radial-gradient(circle at center, #261610 0%, #0d0a09 100%)';
+        clockTime.textContent = '10:00';
+      }
+    });
+
+    // Scene 2: 12:00 (Noon Peak Warm Bright Red-Brown)
+    ScrollTrigger.create({
+      trigger: '#scene-1200',
+      start: 'top 60%',
+      onEnter: () => {
+        bgLayer.style.background = 'radial-gradient(circle at center, #4a1910 0%, #0d0a09 100%)';
+        clockTime.textContent = '12:00';
+      },
+      onLeaveBack: () => {
+        bgLayer.style.background = 'radial-gradient(circle at center, #3a2218 0%, #0d0a09 100%)';
+        clockTime.textContent = '10:00';
+      }
+    });
+
+    // Scene 3: Horizontal Scroll Menu (15:00 - Afternoon Calm)
+    // Horizontal pin created FIRST before night section to accurately account for scroll distance
+    const menuInner = document.getElementById('menuInner');
+    
+    let menuTween = gsap.to(menuInner, {
+      x: () => -(menuInner.scrollWidth - window.innerWidth + 40),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#scene-1500',
+        pin: true,
+        scrub: 1,
+        end: () => '+=' + (menuInner.scrollWidth - window.innerWidth + 200),
+        onEnter: () => {
+          bgLayer.style.background = 'radial-gradient(circle at center, #2d1d15 0%, #0c0a09 100%)';
+          clockTime.textContent = '15:00';
+        },
+        onLeaveBack: () => {
+          bgLayer.style.background = 'radial-gradient(circle at center, #4a1910 0%, #0d0a09 100%)';
+          clockTime.textContent = '12:00';
+        }
+      }
+    });
+
+    // Scene 4: 21:00 (Night Closing Deep Amber Black)
+    ScrollTrigger.create({
+      trigger: '#store-info',
+      start: 'top 70%',
+      onEnter: () => {
+        bgLayer.style.background = 'radial-gradient(circle at center, #1a100c 0%, #050404 100%)';
+        clockTime.textContent = '21:00';
+      },
+      onLeaveBack: () => {
+        bgLayer.style.background = 'radial-gradient(circle at center, #2d1d15 0%, #0c0a09 100%)';
+        clockTime.textContent = '15:00';
+      }
+    });
+  </script>
+</body>
+</html>
